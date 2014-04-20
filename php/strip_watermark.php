@@ -6,6 +6,11 @@
  * Usage: 
  *
  *   $ php strip_watermark.php
+ *
+ * PHP-EXT:
+ *   
+ *   (Ubuntu) php5-gd
+ * 
  */
 class gd_util
 {
