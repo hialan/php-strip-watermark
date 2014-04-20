@@ -45,7 +45,7 @@ class gd_util
 	public static function GetResizedImageResource($orig_gdImageResource, $new_width, $new_height)
 	{
 		//self::Blur($orig_gdImageResource);
-		imagefilter($orig_gdImageResource, IMG_FILTER_SMOOTH, 13);
+		imagefilter($orig_gdImageResource, IMG_FILTER_SMOOTH, 3);
 
 		$orig_info = array(
 				'width' => imagesx($orig_gdImageResource),
@@ -64,9 +64,9 @@ class gd_util
 //		imagefilter($gdImageResource, IMG_FILTER_SMOOTH, -1);
 
 		$gaussian = array(
-			array(1.0, 2.0, 1.0), 
+			array(2.0, 2.0, 2.0), 
 			array(2.0, 4.0, 2.0), 
-			array(1.0, 2.0, 1.0),
+			array(2.0, 2.0, 2.0),
 		);
 
 		$sum = 0;
@@ -136,7 +136,7 @@ echo "Blur ... \n";
 gd_util::Blur($newim);
 
 echo "Do threshold ... \n";
-gd_util::ThresholdFilter($newim, 100);
+gd_util::ThresholdFilter($newim, 95);
 
 echo "Save out.png ... \n";
 imagepng($newim, 'out.png');
