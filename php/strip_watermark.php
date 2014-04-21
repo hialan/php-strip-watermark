@@ -50,7 +50,7 @@ class gd_util
 	public static function GetResizedImageResource($orig_gdImageResource, $new_width, $new_height)
 	{
 		//self::Blur($orig_gdImageResource);
-		imagefilter($orig_gdImageResource, IMG_FILTER_SMOOTH, 3);
+//		imagefilter($orig_gdImageResource, IMG_FILTER_SMOOTH, 3);
 
 		$orig_info = array(
 				'width' => imagesx($orig_gdImageResource),
@@ -100,10 +100,10 @@ class gd_util
 			for($y=0;$y<$height;$y++)
 			{
 				$rgb=imagecolorat($gdImageResource,$x,$y);
-				// r: ($rgb>>16)&0xFF;
-				// g: ($rgb>>8)&0xFF;
-				// b: $rgb&0xFF;
-				$graylevel = $rgb&0xFF;
+				$r = ($rgb>>16)&0xFF;
+				$g = ($rgb>>8)&0xFF;
+				$b = $rgb&0xFF;
+				$graylevel = intval(($r+$g+$b) / 3);
 
 				if($graylevel > $threshold)
 				{
@@ -120,7 +120,8 @@ class gd_util
 	}
 }
 
-$im = imagecreatefromjpeg('in.jpg');
+echo "Loading {$argv[1]}...\n";
+$im = imagecreatefromjpeg($argv[1]);
 
 $orig_info = array(
 		'width' => imagesx($im),
@@ -130,7 +131,7 @@ $orig_info = array(
 print_r($orig_info);
 echo ($orig_info['width'] / $orig_info['height']) . PHP_EOL;
 
-$size = gd_util::GetNewSizeByMaxLength($im);
+$size = gd_util::GetNewSizeByMaxLength($im, 7000);
 print_r($size);
 echo ($size['width'] / $size['height']) . PHP_EOL;
 
@@ -141,10 +142,12 @@ echo "Blur ... \n";
 gd_util::Blur($newim);
 
 echo "Do threshold ... \n";
-gd_util::ThresholdFilter($newim, 95);
+gd_util::ThresholdFilter($newim, 200);
 
-echo "Save out.png ... \n";
-imagepng($newim, 'out.png');
+$outfname = "{$argv[1]}.png";
+echo "Save $outfname ... \n";
+imagetruecolortopalette($newim, false, 255);
+imagepng($newim, $outfname);
 
 imagedestroy($im);
 imagedestroy($newim);
