@@ -143,6 +143,7 @@ gd_util::Blur($newim);
 
 echo "Do threshold ... \n";
 gd_util::ThresholdFilter($newim, 200);
+//gd_util::ThresholdFilter($newim, 95);
 
 $outfname = "{$argv[1]}.png";
 echo "Save $outfname ... \n";
